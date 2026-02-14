@@ -10,6 +10,7 @@
     <!-- BRIEF MODE -->
     <div v-if="!isVerbose" class="brief">
       <p>Basic domain information</p>
+      <DataTable :header="'Owner'" :rows="ownerRows" />
     </div>
 
     <!-- DETAILED MODE -->
@@ -19,25 +20,26 @@
     </div>
   </section>
 </template>
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
 import ToggleSwitch from '@/components/ui/ToggleSwitch.vue'
+import DataTable from '@/components/ui/DataTable.vue'
 import type { DomainType } from '@/types/types'
+import type { TableCell } from '@/components/ui/DataTable.vue'
 
-defineProps<{ domain: DomainType }>()
-export default defineComponent({
-  name: 'DomainDetail',
-  components: {
-    ToggleSwitch,
-  },
-  setup() {
-    const isVerbose = ref<boolean>(false)
+const props = defineProps<{ domain: DomainType }>()
 
-    return {
-      isVerbose,
-    }
-  },
+const isVerbose = ref<boolean>(false)
+
+const ownerRows = computed<TableCell[][]>(() => {
+  const owner = props.domain.owner
+  return [
+    ['Handle', owner.handle],
+    ['Organization', { text: owner.organization, published: owner.publish.organization }],
+    ['Name', { text: owner.name, published: owner.publish.name }],
+  ]
 })
+//const dnsRows = computed(() => props.domain.nsset.dns.map((dns) => [dns.name, dns.ip_address]))
 </script>
 <style scoped>
 .domain-name {
