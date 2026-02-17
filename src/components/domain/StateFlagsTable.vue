@@ -36,16 +36,16 @@
           </span>
         </div>
       </div>
-      <div v-if="ungroupedFlags.length > 0" class="flags-column">
-        <div class="flag-item" v-for="flagName in ungroupedFlags" :key="flagName.name">
-          <span v-if="flagMap[flagName.name]?.active" class="active-icon">
+      <div v-if="ungroupedFlags.length" class="flags-column">
+        <div class="flag-item" v-for="flag in ungroupedFlags" :key="flag.name">
+          <span v-if="flag.active" class="active-icon">
             <IconCheckCircle size="14" />
           </span>
-          <span v-if="!flagMap[flagName.name]?.active" class="inactive-icon">
+          <span v-if="!flag.active" class="inactive-icon">
             <IconCloseCircle size="14" />
           </span>
-          <span class="text" :class="flagMap[flagName.name]?.active ? 'green' : 'red'">
-            {{ flagMap[flagName.name]?.description }}
+          <span class="text" :class="flag.active ? 'green' : 'red'">
+            {{ flag.description }}
           </span>
         </div>
       </div>
