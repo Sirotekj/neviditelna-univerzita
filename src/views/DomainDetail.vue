@@ -7,39 +7,58 @@
       <span class="label">Verbose view</span>
     </div>
 
-    <!-- BRIEF MODE -->
-    <div v-if="!isVerbose" class="brief">
-      <p>Basic domain information</p>
-      <DataTable :header="'Owner'" :rows="ownerRows" />
+    <div class="full-container">
+      <div class="left-container">
+        <AuthInfoTable :expiresAt="domain.expires_at" />
+        <EventsTable :isVerbose="isVerbose" :events="domain.events" />
+        <StateFlagsTable
+          :isVerbose="isVerbose"
+          :header="'State flags'"
+          :state_flags="domain.state_flags"
+        />
+      </div>
+      <div class="right-container">
+        <OwnerTable :owner="domain.owner" />
+        <AdminContactsTable
+          :isVerbose="isVerbose"
+          :admin_contacts="domain.administrative_contacts"
+        />
+        <NssetTable :nsset="domain.nsset" />
+        <KeysetTable :keyset="domain.keyset" />
+      </div>
     </div>
 
+    <!-- BRIEF MODE -->
+    <!--div v-if="!isVerbose" class="brief">
+      <p>Basic domain information</p>
+      
+    </div-->
+
     <!-- DETAILED MODE -->
-    <div v-else class="detailed">
+    <!--div v-else class="detailed">
       <p>Extended domain information</p>
       <p>More technical details, history, metadata…</p>
-    </div>
+    </div-->
   </section>
 </template>
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import ToggleSwitch from '@/components/ui/ToggleSwitch.vue'
-import DataTable from '@/components/ui/DataTable.vue'
-import type { DomainType } from '@/types/types'
-import type { TableCell } from '@/components/ui/DataTable.vue'
 
-const props = defineProps<{ domain: DomainType }>()
+import AuthInfoTable from '@/components/domain/AuthInfoTable.vue'
+import EventsTable from '@/components/domain/EventsTable.vue'
+import StateFlagsTable from '@/components/domain/StateFlagsTable.vue'
+
+import OwnerTable from '@/components/domain/OwnerTable.vue'
+import AdminContactsTable from '@/components/domain/AdminContactsTable.vue'
+import NssetTable from '@/components/domain/NssetTable.vue'
+import KeysetTable from '@/components/domain/KeysetTable.vue'
+
+import type { DomainType } from '@/types/types'
+
+defineProps<{ domain: DomainType }>()
 
 const isVerbose = ref<boolean>(false)
-
-const ownerRows = computed<TableCell[][]>(() => {
-  const owner = props.domain.owner
-  return [
-    ['Handle', owner.handle],
-    ['Organization', { text: owner.organization, published: owner.publish.organization }],
-    ['Name', { text: owner.name, published: owner.publish.name }],
-  ]
-})
-//const dnsRows = computed(() => props.domain.nsset.dns.map((dns) => [dns.name, dns.ip_address]))
 </script>
 <style scoped>
 .domain-name {
@@ -56,5 +75,25 @@ const ownerRows = computed<TableCell[][]>(() => {
 .label {
   font-size: 14px;
   color: #555;
+}
+.full-container {
+  display: flex;
+  width: 100%;
+  gap: 48px;
+  @media (max-width: 1444px) {
+    display: block;
+  }
+}
+.left-container {
+  width: 60%;
+  @media (max-width: 1444px) {
+    width: 100%;
+  }
+}
+.right-container {
+  width: 40%;
+  @media (max-width: 1444px) {
+    width: 100%;
+  }
 }
 </style>

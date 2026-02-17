@@ -2,10 +2,13 @@
   <aside class="sidebar">
     <!-- menu / placeholder -->
     <div class="applications">Applications</div>
-    <div class="registry">Registry</div>
+    <div class="registry"><IconEarth />Registry</div>
   </aside>
 </template>
 
+<script setup lang="ts">
+import IconEarth from '../icons/IconEarth.vue'
+</script>
 <style>
 .sidebar {
   width: 250px;
@@ -19,5 +22,8 @@
 .registry {
   padding: 12px;
   background: #ffc107;
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 </style>

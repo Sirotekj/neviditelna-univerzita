@@ -1,6 +1,6 @@
 export type DnsRecord = { name: string; ip_address: string }
-export type Nsset = { handle: string; registar: string; dns: DnsRecord[] }
-export type Keyset = { handle: string; registar: string; dns_keys: string[] }
+export type Nsset = { handle: string; registrar: string; dns: DnsRecord[] }
+export type Keyset = { handle: string; registrar: string; dns_keys: string[] }
 export type Publish = {
   organization: boolean
   name: boolean

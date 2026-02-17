@@ -2,7 +2,7 @@
   <table>
     <thead>
       <tr>
-        <th colspan="2">
+        <th colspan="4">
           {{ header }}
         </th>
       </tr>
@@ -10,10 +10,8 @@
     <tbody>
       <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
         <td v-for="(cell, cellIndex) in row" :key="cellIndex">
-          <span v-if="typeof cell === 'string'"> {{ cell }}</span>
-          <span v-else class="cell-with-icon">
-            {{ cell.text }}
-            <span v-if="cell.published" class="published-icon"> ● </span>
+          <span class="cell">
+            {{ getCellValue(cell) }}
           </span>
         </td>
       </tr>
@@ -22,13 +20,21 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ header: string; rows: TableCell[][] }>()
-export type TableCell = string | { text: string; published?: boolean }
+import { formatDate, isIsoDateString } from '../utils/utils'
+defineProps<{ publish: boolean; header: string; rows: TableCell[][] }>()
+
+export type TableCell = string
+
+function getCellValue(cell: TableCell): string {
+  return isIsoDateString(cell) ? formatDate(cell) : cell
+  //return typeof cell === 'string' ? cell : cell.value
+}
 </script>
 
-<style>
+<style scoped>
 table {
   width: 100%;
+  margin-block: 24px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   border-spacing: 0;
@@ -40,15 +46,25 @@ thead {
 th,
 td {
   padding: 4px 8px;
+  white-space: pre-line;
 }
-.cell-with-icon {
+
+th:first-child {
+  font-weight: bold;
+}
+td:nth-child(odd) span {
+  font-weight: bold;
+}
+.cell {
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
 .published-icon {
-  color: green;
+  display: flex;
+  color: var(--color-green);
   font-size: 10px;
+  width: 14px;
 }
 </style>

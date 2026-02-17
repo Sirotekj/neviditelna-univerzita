@@ -29,6 +29,6 @@ import AppSidebar from './AppSidebar.vue'
 
 .content {
   flex: 1;
-  padding: 24px;
+  padding: 32px;
 }
 </style>
