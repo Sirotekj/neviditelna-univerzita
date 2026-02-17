@@ -20,29 +20,24 @@
     </div>
     <div v-else class="flags-grid">
       <div
-        v-for="(group, groupIndex) in state_flags.groups"
+        v-for="(group, groupIndex) in groupedFlags"
         :key="'group-' + groupIndex"
         class="flags-column"
       >
-        <div class="flag-item" v-for="flagName in group" :key="flagName" :flag="flagMap[flagName]">
-          <span v-if="flagMap[flagName]?.active" class="active-icon">
+        <div v-for="flag in group" :key="flag?.name" class="flag-item">
+          <span v-if="flag?.active" class="active-icon">
             <IconCheckCircle size="14" />
           </span>
-          <span v-if="!flagMap[flagName]?.active" class="inactive-icon">
+          <span v-else class="inactive-icon">
             <IconCloseCircle size="14" />
           </span>
-          <span class="text" :class="flagMap[flagName]?.active ? 'green' : 'red'">
-            {{ flagMap[flagName]?.description }}
+          <span class="text" :class="flag?.active ? 'green' : 'red'">
+            {{ flag?.description }}
           </span>
         </div>
       </div>
-      <div class="flags-column">
-        <div
-          class="flag-item"
-          v-for="flagName in ungroupedFlags"
-          :key="flagName.name"
-          :flag="flagMap[flagName.name]"
-        >
+      <div v-if="ungroupedFlags.length > 0" class="flags-column">
+        <div class="flag-item" v-for="flagName in ungroupedFlags" :key="flagName.name">
           <span v-if="flagMap[flagName.name]?.active" class="active-icon">
             <IconCheckCircle size="14" />
           </span>
@@ -81,11 +76,21 @@ const flagOn = computed(() => {
 const flagMap = computed(() =>
   Object.fromEntries(props.state_flags.flags.map((flag) => [flag.name, flag])),
 )
-const groupedFlagNames = computed(() => {
-  return new Set(props.state_flags.groups.flat())
+/*const groupedFlags = computed(() => {
+  return new Set(props.state_flags.groups.flat().filter((name) => flagMap.value[name]))
+})*/
+const groupedFlags = computed(() => {
+  return props.state_flags.groups.map((group) =>
+    group.map((name) => flagMap.value[name]).filter(Boolean),
+  )
 })
+/*const ungroupedFlags = computed(() => {
+  return props.state_flags.flags.filter((flag) => !groupedFlags.value.has(flag.name))
+})*/
 const ungroupedFlags = computed(() => {
-  return props.state_flags.flags.filter((flag) => !groupedFlagNames.value.has(flag.name))
+  const groupedNames = new Set(props.state_flags.groups.flat())
+
+  return props.state_flags.flags.filter((flag) => !groupedNames.has(flag.name))
 })
 </script>
 <style scope>
