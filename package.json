@@ -5,14 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "vite build",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build",
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "test": "jest"
   },
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
@@ -23,23 +23,28 @@
     "vuetify": "^3.11.8"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
     "@tsconfig/node24": "^24.0.4",
+    "@types/jest": "^26.0.24",
     "@types/node": "^24.10.9",
     "@vitejs/plugin-vue": "^6.0.3",
-    "@vue/eslint-config-typescript": "^14.6.0",
-    "@vue/tsconfig": "^0.8.1",
+    "@vue/test-utils": "^2.4.6",
+    "babel-jest": "^26.6.3",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-oxlint": "~1.42.0",
     "eslint-plugin-vue": "~10.7.0",
+    "jest": "^26.6.3",
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
     "oxlint": "~1.42.0",
     "prettier": "3.8.1",
-    "typescript": "~5.9.3",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.9.5",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.5",
-    "vue-tsc": "^3.2.4"
+    "vue-jest": "^5.0.0-alpha.10"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"

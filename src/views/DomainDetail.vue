@@ -27,18 +27,6 @@
         <KeysetTable :keyset="domain.keyset" />
       </div>
     </div>
-
-    <!-- BRIEF MODE -->
-    <!--div v-if="!isVerbose" class="brief">
-      <p>Basic domain information</p>
-      
-    </div-->
-
-    <!-- DETAILED MODE -->
-    <!--div v-else class="detailed">
-      <p>Extended domain information</p>
-      <p>More technical details, history, metadata…</p>
-    </div-->
   </section>
 </template>
 <script setup lang="ts">
